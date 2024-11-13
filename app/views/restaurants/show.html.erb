@@ -1,0 +1,54 @@
+<div class="container my-5">
+  <!-- Restaurant Info -->
+  <h1 class="text-center mb-4 text-primary display-4"><%= @restaurant.name %></h1>
+  <p class="lead text-center text-secondary"><%= @restaurant.address %></p>
+  <p class="text-center text-secondary"><%= @restaurant.category %></p>
+
+  <!-- Reviews Section -->
+  <hr class="my-4">
+  <h3 class="text-primary mb-4">Reviews</h3>
+  <ul class="list-group">
+    <% @restaurant.reviews.each do |review| %>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <p class="mb-0"><%= review.content %></p>
+        <p class="mb-0"><%= review.rating %>/5</p>
+      </li>
+    <% end %>
+  </ul>
+
+  <!-- Add a Review Section -->
+  <hr class="my-4">
+  <h3 class="text-primary mb-4">Add a Review</h3>
+
+  <%= simple_form_for [ @restaurant, @review ] do |form| %>
+    <!-- Review Content -->
+    <div class="form-group">
+      <%= form.label :content, "Review" %>
+      <%= form.text_area :content, class: "form-control", rows: 4 %>
+    </div>
+
+    <!-- Rating -->
+    <div class="form-group">
+      <%= form.label :rating, "Rating (0-5)" %>
+      <%= form.number_field :rating, class: "form-control", min: 0, max: 5, step: 1 %>
+    </div>
+
+    <!-- Error Messages -->
+    <% if @review.errors.any? %>
+      <div class="alert alert-danger mt-3">
+        <h5>There were errors with your submission:</h5>
+        <ul>
+          <% @review.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <!-- Submit Button -->
+    <%= form.submit "Submit Review", class: "btn btn-primary btn-lg mt-3 w-100" %>
+  <% end %>
+
+  <!-- Back to Restaurants Button -->
+  <%= link_to "Back to All Restaurants", restaurants_path, class: "btn btn-outline-primary btn-lg mt-3" %>
+</div>
